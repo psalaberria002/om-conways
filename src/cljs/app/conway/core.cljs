@@ -35,8 +35,8 @@
 
 (defn grid-component
   [app owner {:keys [cell-size grid]
-              :or {cell-size 10
-                   grid {:x 400
+              :or {cell-size 5
+                   grid {:x 100
                          :y 100}}}]
   (reify
     om/IRender
@@ -52,14 +52,14 @@
                                    :height cell-size
                                    :fill (if ((:old-state app) [x y])
                                            "red"
-                                           "blue")
+                                           "green")
                                    :x (* x cell-size)
                                    :y (* y cell-size)}))))))))
 
 (defn app-component
   [app owner {:keys [cell-size grid speed-ms]
-              :or {cell-size 10
-                   grid {:x 400
+              :or {cell-size 5
+                   grid {:x 100
                          :y 100}
                    speed-ms 100}}]
   (let [evolve-fn (fn []

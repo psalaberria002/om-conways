@@ -12,8 +12,9 @@
                            [21 3] [21 4] [21 5] [22 3] [22 4] [22 5] [23 2] [23 6] [25 1] [25 2] [25 6] [25 7]
                            [35 3] [35 4] [36 3] [36 4]}
              :old-state #{}}
-            {:opts {:cell-size 5
-                    :grid {:x 100 :y 100}}}
+            {:opts {:cell-size 3
+                    :grid {:x 100 :y 100}
+                    :speed-ms 10}}
             {})
 
 (defcard-om die-hard
@@ -24,8 +25,7 @@
                            [-3 1] [1 1] [2 1] [3 1]}
              :old-state #{}}
             {:opts {:cell-size 10
-                    :grid {:x 10 :y 10}
-                    :speed 500}}
+                    :grid {:x 10 :y 10}}}
             {})
 
 (defcard-om die-hard
@@ -36,8 +36,7 @@
                            [-3 1] [1 1] [2 1] [3 1]}
              :old-state #{}}
             {:opts {:cell-size 10
-                    :grid {:x 50 :y 50}
-                    :speed 500}}
+                    :grid {:x 50 :y 50}}}
             {})
 
 

@@ -4,6 +4,7 @@
   (:require [conway.core :refer [app-component grid-component]]))
 
 (defcard-om block
+            "*Block initital state*"
             grid-component
             {:game-state #{[-1 -1] [0 -1]
                            [-1 0] [0 0]}
@@ -13,6 +14,7 @@
             {})
 
 (defcard-om block
+            "*Block final state*"
             app-component
             {:game-state #{[-1 -1] [0 -1]
                            [-1 0] [0 0]}
@@ -22,6 +24,7 @@
             {})
 
 (defcard-om beehive
+            "*Beehive initial state*"
             grid-component
             {:game-state #{[-1 -1] [0 -1]
                            [-2 0] [1 0]
@@ -32,6 +35,7 @@
             {})
 
 (defcard-om beehive
+            "*Beehive final state*"
             app-component
             {:game-state #{[-1 -1] [0 -1]
                            [-2 0] [1 0]
@@ -42,6 +46,7 @@
             {})
 
 (defcard-om loaf
+            "*Loaf initial state*"
             grid-component
             {:game-state #{[-1 -2] [0 -2]
                            [-2 -1] [1 -1]
@@ -53,6 +58,7 @@
             {})
 
 (defcard-om loaf
+            "*Loaf final state*"
             app-component
             {:game-state #{[-1 -2] [0 -2]
                            [-2 -1] [1 -1]
@@ -64,6 +70,7 @@
             {})
 
 (defcard-om boat
+            "*Boat initial state*"
             grid-component
             {:game-state #{[-1 -1] [0 -1]
                            [-1 0] [1 0]
@@ -74,6 +81,7 @@
             {})
 
 (defcard-om boat
+            "*Boat final state*"
             app-component
             {:game-state #{[-1 -1] [0 -1]
                            [-1 0] [1 0]
