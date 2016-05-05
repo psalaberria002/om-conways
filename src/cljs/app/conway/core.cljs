@@ -7,13 +7,10 @@
 
 (enable-console-print!)
 
-(def cell-width 10)
-(def cell-height 10)
-
 ;; Initial state, the "Blinker" lifeform
-(defonce app-state (atom {:old-state #{}
-                          :game-state #{[-1 0] [-1 1]
-                                        [0 -1] [0 0] [1 0]}}))
+(defonce app-state (atom {:game-state #{[-1 0] [-1 1]
+                                        [0 -1] [0 0] [1 0]}
+                          :old-state #{}}))
 
 
 (defn neighbors
@@ -37,31 +34,42 @@
            cell))))
 
 (defn grid-component
-  [app]
+  [app owner {:keys [cell-size grid]
+              :or {cell-size 10
+                   grid {:x 400
+                         :y 100}}}]
   (reify
     om/IRender
     (render [_]
-      (dom/svg #js {:width 450
-                    :height 450
-                    :viewBox "-450 -450 900 900"}
-               (for [[x y] (:game-state app)]
-                 (dom/rect #js {:width cell-width
-                                :height cell-height
-                                :fill (if ((:old-state app) [x y])
-                                        "red"
-                                        "green")
-                                :x (* x cell-width)
-                                :y (* y cell-height)}))))))
+      (let [width (* cell-size (:x grid))
+            height (* cell-size (:y grid))]
+        (dom/div nil
+          (dom/svg #js {:width width
+                        :height height
+                        :viewBox (str "-" (/ width 2) " -" (/ height 2) " " width " " height)}
+                  (for [[x y] (:game-state app)]
+                    (dom/rect #js {:width cell-size
+                                   :height cell-size
+                                   :fill (if ((:old-state app) [x y])
+                                           "red"
+                                           "blue")
+                                   :x (* x cell-size)
+                                   :y (* y cell-size)}))))))))
 
 (defn app-component
-  [app owner]
+  [app owner {:keys [cell-size grid speed-ms]
+              :or {cell-size 10
+                   grid {:x 400
+                         :y 100}
+                   speed-ms 100}}]
   (let [evolve-fn (fn []
                     (om/set-state! owner :evolving true)
                     (let [command-ch (om/get-state owner :death-ch)]
                       (go-loop []
-                               (let [[value from-ch] (alts! [command-ch (timeout 100)])]
-                                 (if (and (= from-ch command-ch)
-                                          (= value :death))
+                               (let [[value from-ch] (alts! [command-ch (timeout speed-ms)])]
+                                 (if (or (and (= from-ch command-ch)
+                                              (= value :death))
+                                         (= (:old-state @app) (:game-state @app)))
                                    (om/set-state! owner :evolving false)
                                    (do (om/update! app :old-state (:game-state @app))
                                        (om/transact! app :game-state next-population)
@@ -84,11 +92,8 @@
       om/IRender
       (render [_]
         (dom/div nil
-                 (dom/button #js {:onClick (fn [evt] (if (om/get-state owner :evolving)
-                                                       (go (>! (om/get-state owner :death-ch) :death))
-                                                       (evolve-fn)))}
-                             "Start/Stop")
-                 (om/build grid-component app))))))
+                 (om/build grid-component app {:opts {:cell-size cell-size
+                                                      :grid grid}}))))))
 
 (om/root
  app-component

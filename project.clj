@@ -35,19 +35,25 @@
   ;; (browser-repl) live.
   :repl-options {:init-ns user}
 
-  :cljsbuild {:builds
-              {:app
-               {:source-paths ["src/cljs"]
+  :cljsbuild {:builds [{:id "app"
+                        :source-paths ["src/cljs/app"]
+                        :figwheel true
+                        ;; Alternatively, you can configure a function to run every time figwheel reloads.
+                        ;; :figwheel {:on-jsload "conway.core/on-figwheel-reload"}
 
-                :figwheel true
-                ;; Alternatively, you can configure a function to run every time figwheel reloads.
-                ;; :figwheel {:on-jsload "conway.core/on-figwheel-reload"}
-
-                :compiler {:main conway.core
-                           :asset-path "js/compiled/out"
-                           :output-to "resources/public/js/compiled/conway.js"
-                           :output-dir "resources/public/js/compiled/out"
-                           :source-map-timestamp true}}}}
+                        :compiler {:main conway.core
+                                   :asset-path "js/compiled/out"
+                                   :output-to "resources/public/js/compiled/conway.js"
+                                   :output-dir "resources/public/js/compiled/out"
+                                   :source-map-timestamp true}}
+                       {:id "devcards"
+                        :source-paths ["src/cljs/app" "src/cljs/devcards"]
+                        :figwheel {:devcards true} ;; <- note this
+                        :compiler {:main conway.devcards.core
+                                   :asset-path "js/compiled/devcards_out"
+                                   :output-to "resources/public/js/compiled/devcards.js"
+                                   :output-dir "resources/public/js/compiled/devcards_out"
+                                   :source-map-timestamp true}}]}
 
   ;; When running figwheel from nREPL, figwheel will read this configuration
   ;; stanza, but it will read it without passing through leiningen's profile
@@ -58,6 +64,7 @@
              ;; :server-port 3449                ;; default
              ;; :server-ip "127.0.0.1"           ;; default
              :css-dirs ["resources/public/css"]  ;; watch and update CSS
+             :builds-to-start ["app" "devcards"]
 
              ;; Instead of booting a separate server on its own port, we embed
              ;; the server ring handler inside figwheel's http-kit server, so
@@ -89,7 +96,8 @@
              {:dependencies [[figwheel "0.5.0-6"]
                              [figwheel-sidecar "0.5.0-6"]
                              [com.cemerick/piggieback "0.2.1"]
-                             [org.clojure/tools.nrepl "0.2.12"]]
+                             [org.clojure/tools.nrepl "0.2.12"]
+                             [devcards "0.2.0-8"]]
 
               :plugins [[lein-figwheel "0.5.0-6"]
                         [lein-doo "0.1.6"]]
