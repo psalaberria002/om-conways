@@ -3,4 +3,6 @@
    [devcards.core :as dc :refer [defcard defcard-om]])
   (:require [conway.devcards.still-lifes]
             [conway.devcards.oscillators]
-            [conway.devcards.spaceships]))
+            [conway.devcards.spaceships]
+            [conway.devcards.slides]
+            [conway.devcards.slideshow]))
