@@ -12,10 +12,12 @@
 (def http-handler
   (wrap-reload #'conway.server/http-handler))
 
-(defn run []
-  (figwheel/start-figwheel!))
-
+;; Start the Clojure backend application
 (defn start-app []
   (server/-main))
+
+;; Start figwheel
+(defn start-figwheel []
+  (figwheel/start-figwheel!))
 
 (def browser-repl figwheel/cljs-repl)

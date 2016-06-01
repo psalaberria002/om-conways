@@ -1,11 +1,11 @@
 (ns conway.devcards.still-lifes
   (:require-macros
    [devcards.core :as dc :refer [defcard defcard-om]])
-  (:require [conway.core :refer [app-component grid-component]]))
+  (:require [conway.core :refer [app-component population-view]]))
 
 (defcard-om block
             "*Block initital state*"
-            grid-component
+            population-view
             {:game-state #{[-1 -1] [0 -1]
                            [-1 0] [0 0]}
              :old-state #{}}
@@ -25,7 +25,7 @@
 
 (defcard-om beehive
             "*Beehive initial state*"
-            grid-component
+            population-view
             {:game-state #{[-1 -1] [0 -1]
                            [-2 0] [1 0]
                            [-1 1] [0 1]}
@@ -47,7 +47,7 @@
 
 (defcard-om loaf
             "*Loaf initial state*"
-            grid-component
+            population-view
             {:game-state #{[-1 -2] [0 -2]
                            [-2 -1] [1 -1]
                            [-1 0] [1 0]
@@ -71,7 +71,7 @@
 
 (defcard-om boat
             "*Boat initial state*"
-            grid-component
+            population-view
             {:game-state #{[-1 -1] [0 -1]
                            [-1 0] [1 0]
                            [0 1]}

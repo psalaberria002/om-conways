@@ -51,8 +51,23 @@
   (reify
     om/IRender
     (render [_]
-      (dom/div nil "QUESTIONS?")))
+      (dom/div #js {:className "flex-wrapper-centered"}
+        (dom/div #js {:className "big-text"}
+          "QUESTIONS?"))))
   )
+
+(defn hiring-slide
+  [data]
+  (reify
+    om/IRender
+    (render [_]
+      (dom/div #js {:className "hiring flex-wrapper-centered"}
+        (dom/div #js {:className "big-text"}
+          (dom/div #js {:className "td-logo"})
+          "We are hiring!")
+        (dom/ul nil
+          (dom/li nil "2 Data Engineers")
+          (dom/li nil "1 Software Developer with great frontend skills"))))))
 
 (defn slide1-extra
   [data]
@@ -75,10 +90,13 @@
                      (:last-slide? data)
                      (om/build last-slide data)
 
+                     (:hiring-slide? data)
+                     (om/build hiring-slide data)
+
                      :else
                      (dom/div nil
                               (when-let [title (:title data)]
-                                (dom/h4 nil title))
+                                (dom/h2 #js {:className "centered slide-title"} title))
                               (when-let [items (:items data)]
                                 (dom/ul #js {:className "slide-item-list"}
                                         (for [item items]
@@ -115,4 +133,6 @@
             selected-slide (nth slides selected-slide-idx)]
         (dom/div nil
                  (om/build slide-component selected-slide))))))
+
+
 

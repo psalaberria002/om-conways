@@ -4,14 +4,12 @@
             [cljs.core.async :refer [timeout <! >! alts! chan]])
   (:require-macros [cljs.core.async.macros :refer [go go-loop]]))
 
-
 (enable-console-print!)
 
 ;; Initial state, the "Blinker" lifeform
 (defonce app-state (atom {:game-state #{[-1 0] [-1 1]
                                         [0 -1] [0 0] [1 0]}
                           :old-state #{}}))
-
 
 (defn neighbors
   "Given a cell, return the collection of its neighbors in every direction"
@@ -24,16 +22,16 @@
 (defn next-population
   "Given a population, return the next generation of it
    following the rules of Conway's Life"
-  [pop]
-  (let [all-neighbors (mapcat neighbors pop)
+  [population]
+  (let [all-neighbors (mapcat neighbors population)
         neigh-count (frequencies all-neighbors)]
     (set (for [[cell count] neigh-count
                :when (or (= count 3)
                          (and (= count 2)
-                              (pop cell)))]
+                              (population cell)))]
            cell))))
 
-(defn grid-component
+(defn population-view
   [app owner {:keys [cell-size grid]
               :or {cell-size 5
                    grid {:x 100
@@ -43,18 +41,18 @@
     (render [_]
       (let [width (* cell-size (:x grid))
             height (* cell-size (:y grid))]
-        (dom/div nil
+        (dom/div #js {:className "centered"}
           (dom/svg #js {:width width
                         :height height
                         :viewBox (str "-" (/ width 2) " -" (/ height 2) " " width " " height)}
-                  (for [[x y] (:game-state app)]
-                    (dom/rect #js {:width cell-size
-                                   :height cell-size
-                                   :fill (if ((:old-state app) [x y])
-                                           "red"
-                                           "green")
-                                   :x (* x cell-size)
-                                   :y (* y cell-size)}))))))))
+                   (for [[x y] (:game-state app)]
+                     (dom/rect #js {:width cell-size
+                                    :height cell-size
+                                    :fill (if ((:old-state app) [x y])
+                                            "red"
+                                            "green")
+                                    :x (* x cell-size)
+                                    :y (* y cell-size)}))))))))
 
 (defn app-component
   [app owner {:keys [cell-size grid speed-ms]
@@ -66,10 +64,14 @@
                     (om/set-state! owner :evolving true)
                     (let [command-ch (om/get-state owner :death-ch)]
                       (go-loop []
-                               (let [[value from-ch] (alts! [command-ch (timeout speed-ms)])]
-                                 (if (or (and (= from-ch command-ch)
-                                              (= value :death))
-                                         (= (:old-state @app) (:game-state @app)))
+                               (let [[value from-ch] (alts! [command-ch (timeout speed-ms)])
+                                     stop-evolution? (or
+                                                       ;; Death signal received (manually stopping the evolution)
+                                                       (and (= from-ch command-ch)
+                                                            (= value :death))
+                                                       ;; Same state as previous population
+                                                       (= (:old-state @app) (:game-state @app)))]
+                                 (if stop-evolution?
                                    (om/set-state! owner :evolving false)
                                    (do (om/update! app :old-state (:game-state @app))
                                        (om/transact! app :game-state next-population)
@@ -91,11 +93,11 @@
 
       om/IRender
       (render [_]
-        (dom/div nil
-                 (om/build grid-component app {:opts {:cell-size cell-size
-                                                      :grid grid}}))))))
+        (dom/div #js {:className "centered"}
+          (om/build population-view app {:opts {:cell-size cell-size
+                                                :grid grid}}))))))
 
 (om/root
- app-component
- app-state
- {:target (. js/document (getElementById "app"))})
+  app-component
+  app-state
+  {:target (. js/document (getElementById "app"))})

@@ -1,7 +1,7 @@
 (ns conway.devcards.oscillators
   (:require-macros
    [devcards.core :as dc :refer [defcard defcard-om]])
-  (:require [conway.core :refer [app-component grid-component]]))
+  (:require [conway.core :refer [app-component population-view]]))
 
 (defcard-om blinker
             "*Blinker (period 2)*"

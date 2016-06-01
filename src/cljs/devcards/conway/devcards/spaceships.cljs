@@ -1,7 +1,7 @@
 (ns conway.devcards.spaceships
   (:require-macros
    [devcards.core :as dc :refer [defcard defcard-om]])
-  (:require [conway.core :refer [app-component grid-component]]))
+  (:require [conway.core :refer [app-component population-view]]))
 
 (defcard-om spaceshift-factory
             "*Spaceship factory*"
@@ -19,7 +19,7 @@
 
 (defcard-om die-hard
             "*Die Hard* Dissappears after 130 generations"
-            grid-component
+            population-view
             {:game-state #{[2 -1]
                            [-4 0] [-3 0]
                            [-3 1] [1 1] [2 1] [3 1]}
