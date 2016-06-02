@@ -48,6 +48,7 @@
                    (for [[x y] (:game-state app)]
                      (dom/rect #js {:width cell-size
                                     :height cell-size
+                                    ;; TODO: Move to css classNames instead
                                     :fill (if ((:old-state app) [x y])
                                             "red"
                                             "green")
@@ -85,7 +86,8 @@
 
       om/IDidMount
       (did-mount [_]
-        (evolve-fn))
+        ;; TODO: Start evolution once the component has mounted
+        #_(evolve-fn))
 
       om/IWillUnmount
       (will-unmount [_]

@@ -6,14 +6,15 @@
 
 (defonce slides-config
          (atom {:slides [{:main-slide? true}
-                         {:title "me" :items ["Full-stack Software Engineer at Telenor Digital, Data Insights Team"
-                                              "Originally from the Basque Country, but lived 3 years in Bergen, and the last 2 in Oslo"
+                         {:title "me" :items ["Full Stack Software Engineer, working at Telenor Digital (Data Insights)"
+                                              "Originally from the Basque Country, 5 years in Norway"
                                               "Working with Clojure + Clojurescript for the last 8 months (so much fun!)"
-                                              "Daily tools: AWS, Terraform, Ansible, Gerrit, and many more!"]}
-                         {:title "OM" :items ["React Wrapper"
-                                              "Faster than using only React! Immutable objects in cljs"
+                                              "Daily tools: AWS, Terraform, Ansible, Kafka, Gerrit, and many more!"]}
+                         {:title "OM" :items ["React Wrapper in cljs. Even faster than React! Immutable data structures"
                                               "Application state is stored in a global atom"
-                                              "Components are rendered to DOM elements using parts of the state (cursors) as input"
+                                              "Components are functions from app state to DOM elements"
+                                              "Cursors. Only render if necessary."
+                                              "OM/React components lifecycle (IWillMount, IRender, IDidUpdate,...)"
                                               "Reusable components"]}
                          {:title "Conway's Game of Life"
                           :items ["Zero-player game, where its evolution is determined by its initial state, requiring no further input. Possible to create patterns."
@@ -29,8 +30,8 @@
                          {:title "Figwheel" :items ["Live reloading (cljs + css)"
                                                     "How does it work?"
                                                     "Show Figwheel in action!"
-                                                    "And now what, what if we want to visualize a component in different states at the same time? Devcards to the rescue."]}
-                         {:title "Devcards" :items ["See components in different states at the same time."
+                                                    "And now what, what if we want to visualize a component in different states at the same time? Devcards to the rescue!"]}
+                         {:title "Devcards" :items ["Developed by the same guy as Figwheel"
                                                     "Useful for QA and testing"
                                                     "Also for developing components"
                                                     "Show devcards for conways namespaces!"
