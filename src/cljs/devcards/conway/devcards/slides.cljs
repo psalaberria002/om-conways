@@ -10,23 +10,27 @@
                                               "Originally from the Basque Country, 5 years in Norway"
                                               "Working with Clojure + Clojurescript for the last 8 months (so much fun!)"
                                               "Daily tools: AWS, Terraform, Ansible, Kafka, Gerrit, and many more!"]}
-                         {:title "OM" :items ["React Wrapper in cljs. Even faster than React! Immutable data structures"
+                         {:title "Clojurescript" :items ["Clojure for the browser"
+                                                         "Immutable data structures"
+                                                         "Functional"
+                                                         "Namespaces"
+                                                         "Great community (Clojurians slack channel,...)"
+                                                         "React Wrappers: OM, Reagent, Quiescent,..."]}
+                         {:title "OM" :items ["React Wrapper in cljs. Even faster than React! Reference equality check"
                                               "Application state is stored in a global atom"
                                               "Components are functions from app state to DOM elements"
                                               "Cursors. Only render if necessary."
                                               "OM/React components lifecycle (IWillMount, IRender, IDidUpdate,...)"
-                                              "Reusable components"]}
+                                              "Components are reusable"]}
                          {:title "Conway's Game of Life"
-                          :items ["Zero-player game, where its evolution is determined by its initial state, requiring no further input. Possible to create patterns."
-                                  "A cell will die, or become alive, depending on the state of its neighbors in the previous generation."
-                                  "Show me sOMe code! (conway.core)"]
+                          :items []
                           :extra-component slides/slide1-extra
-                          :extra {:state {:game-state #{[-1 -1] [0 -1] [1 -1]
-                                                        [-2 0] [-1 0] [0 0]}
+                          :extra {:state {:game-state #{[-1 0] [-1 1]
+                                                        [0 -1] [0 0] [1 0]}
                                           :old-state #{}}
-                                  :opts {:opts {:cell-size 20
-                                                :grid {:x 4 :y 4}
-                                                :speed-ms 1000}}}}
+                                  :opts {:opts {:cell-size 10
+                                                :grid {:x 40 :y 40}
+                                                :speed-ms 500}}}}
                          {:title "Figwheel" :items ["Live reloading (cljs + css)"
                                                     "How does it work?"
                                                     "Show Figwheel in action!"
