@@ -10,13 +10,13 @@
                                               "Originally from the Basque Country, 5 years in Norway"
                                               "Working with Clojure + Clojurescript for the last 8 months (so much fun!)"
                                               "Daily tools: AWS, Terraform, Ansible, Kafka, Gerrit, and many more!"]}
-                         {:title "Clojurescript" :items ["Clojure for the browser"
+                         {:title "Clojurescript" :items ["Clojure in the browser"
                                                          "Immutable data structures"
                                                          "Functional"
                                                          "Namespaces"
-                                                         "Great community (Clojurians slack channel,...)"
+                                                         "Great community (e.g. Clojurians slack channel)"
                                                          "React Wrappers: OM, Reagent, Quiescent,..."]}
-                         {:title "OM" :items ["React Wrapper in cljs. Even faster than React! Reference equality check"
+                         {:title "OM" :items ["First React Wrapper in cljs. Even faster than React! Reference equality check"
                                               "Application state is stored in a global atom"
                                               "Components are functions from app state to DOM elements"
                                               "Cursors. Only render if necessary."
@@ -39,8 +39,7 @@
                                                     "Useful for QA and testing"
                                                     "Also for developing components"
                                                     "Show devcards for conways namespaces!"
-                                                    "Figwheel also works!"
-                                                    "I guess you already realized, the slides are also inside a devcard ;)"]}
+                                                    "Figwheel also works!"]}
                          {:last-slide? true}
                          {:hiring-slide? true}]
                 :selected-slide 0}))

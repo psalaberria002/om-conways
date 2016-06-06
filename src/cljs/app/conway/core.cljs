@@ -44,7 +44,8 @@
         (dom/div #js {:className "centered"}
           (dom/svg #js {:width width
                         :height height
-                        :viewBox (str "-" (/ width 2) " -" (/ height 2) " " width " " height)}
+                        :viewBox (str "-" (/ width 2) " -" (/ height 2)
+                                      " " width " " height)}
                    (for [[x y] (:game-state app)]
                      (dom/rect #js {:width cell-size
                                     :height cell-size
@@ -55,49 +56,50 @@
                                     :x (* x cell-size)
                                     :y (* y cell-size)}))))))))
 
+(defn evolve-fn [app owner speed-ms]
+  (om/set-state! owner :evolving true)
+  (let [command-ch (om/get-state owner :death-ch)]
+    (go-loop []
+             (let [[value from-ch] (alts! [command-ch (timeout speed-ms)])
+                   stop-evolution? (or
+                                     ;; Death signal received (manually stopping the evolution)
+                                     (and (= from-ch command-ch)
+                                          (= value :death))
+                                     ;; Same state as previous population
+                                     (= (:old-state @app) (:game-state @app)))]
+               (if stop-evolution?
+                 (om/set-state! owner :evolving false)
+                 (do (om/update! app :old-state (:game-state @app))
+                     (om/transact! app :game-state next-population)
+                     (println (:game-state @app))
+                     (recur)))))))
+
 (defn app-component
   [app owner {:keys [cell-size grid speed-ms]
               :or {cell-size 5
                    grid {:x 100
                          :y 100}
                    speed-ms 100}}]
-  (let [evolve-fn (fn []
-                    (om/set-state! owner :evolving true)
-                    (let [command-ch (om/get-state owner :death-ch)]
-                      (go-loop []
-                               (let [[value from-ch] (alts! [command-ch (timeout speed-ms)])
-                                     stop-evolution? (or
-                                                       ;; Death signal received (manually stopping the evolution)
-                                                       (and (= from-ch command-ch)
-                                                            (= value :death))
-                                                       ;; Same state as previous population
-                                                       (= (:old-state @app) (:game-state @app)))]
-                                 (if stop-evolution?
-                                   (om/set-state! owner :evolving false)
-                                   (do (om/update! app :old-state (:game-state @app))
-                                       (om/transact! app :game-state next-population)
-                                       (println (:game-state @app))
-                                       (recur)))))))]
-    (reify
-      om/IInitState
-      (init-state [_]
-        {:death-ch (chan)
-         :evolving false})
+  (reify
+    om/IInitState
+    (init-state [_]
+      {:death-ch (chan)
+       :evolving false})
 
-      om/IDidMount
-      (did-mount [_]
-        ;; TODO: Start evolution once the component has mounted
-        #_(evolve-fn))
+    om/IDidMount
+    (did-mount [_]
+      ;; Start evolution once the component has mounted
+      #_(evolve-fn app owner speed-ms))
 
-      om/IWillUnmount
-      (will-unmount [_]
-        (go (>! (om/get-state owner :death-ch) :death)))
+    om/IWillUnmount
+    (will-unmount [_]
+      (go (>! (om/get-state owner :death-ch) :death)))
 
-      om/IRender
-      (render [_]
-        (dom/div #js {:className "centered"}
-          (om/build population-view app {:opts {:cell-size cell-size
-                                                :grid grid}}))))))
+    om/IRender
+    (render [_]
+      (dom/div #js {:className "centered"}
+        (om/build population-view app {:opts {:cell-size cell-size
+                                              :grid grid}})))))
 
 (om/root
   app-component
