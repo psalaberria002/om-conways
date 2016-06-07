@@ -6,11 +6,11 @@
 
 (defonce slides-config
          (atom {:slides [{:main-slide? true}
-                         {:title "me" :items ["Full Stack Software Engineer, working at Telenor Digital (Data Insights)"
+                         {:title "me" :items ["Software Engineer at Telenor Digital (Data Insights)"
                                               "Originally from the Basque Country, 5 years in Norway"
                                               "Working with Clojure + Clojurescript for the last 8 months (so much fun!)"
                                               "Daily tools: AWS, Terraform, Ansible, Kafka, Gerrit, and many more!"]}
-                         {:title "Clojurescript" :items ["Clojure in the browser"
+                         {:title "Clojurescript" :items ["\"Clojure\" for the browser"
                                                          "Immutable data structures"
                                                          "Functional"
                                                          "Namespaces"
@@ -20,8 +20,11 @@
                                               "Application state is stored in a global atom"
                                               "Components are functions from app state to DOM elements"
                                               "Cursors. Only render if necessary."
-                                              "OM/React components lifecycle (IWillMount, IRender, IDidUpdate,...)"
+                                              "OM/React components lifecycle protocols (IWillMount, IRender, IDidUpdate,...)"
                                               "Components are reusable"]}
+                         {:title "Figwheel" :items ["Live reloading (cljs + css)"
+                                                    "How does it work?"
+                                                    "Show Figwheel in action!"]}
                          {:title "Conway's Game of Life"
                           :items []
                           :extra-component slides/slide1-extra
@@ -31,10 +34,6 @@
                                   :opts {:opts {:cell-size 10
                                                 :grid {:x 40 :y 40}
                                                 :speed-ms 500}}}}
-                         {:title "Figwheel" :items ["Live reloading (cljs + css)"
-                                                    "How does it work?"
-                                                    "Show Figwheel in action!"
-                                                    "And now what, what if we want to visualize a component in different states at the same time? Devcards to the rescue!"]}
                          {:title "Devcards" :items ["Developed by the same guy as Figwheel"
                                                     "Useful for QA and testing"
                                                     "Also for developing components"

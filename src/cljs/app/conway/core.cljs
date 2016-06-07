@@ -6,7 +6,7 @@
 
 (enable-console-print!)
 
-;; Initial state, the "Blinker" lifeform
+;; Initial state
 (defonce app-state (atom {:game-state #{[-1 0] [-1 1]
                                         [0 -1] [0 0] [1 0]}
                           :old-state #{}}))
@@ -57,7 +57,7 @@
                                     :y (* y cell-size)}))))))))
 
 (defn evolve-fn [app owner speed-ms]
-  (om/set-state! owner :evolving true)
+  (om/set-state! owner :evolving? true)
   (let [command-ch (om/get-state owner :death-ch)]
     (go-loop []
              (let [[value from-ch] (alts! [command-ch (timeout speed-ms)])
@@ -68,7 +68,7 @@
                                      ;; Same state as previous population
                                      (= (:old-state @app) (:game-state @app)))]
                (if stop-evolution?
-                 (om/set-state! owner :evolving false)
+                 (om/set-state! owner :evolving? false)
                  (do (om/update! app :old-state (:game-state @app))
                      (om/transact! app :game-state next-population)
                      (println (:game-state @app))
@@ -84,7 +84,7 @@
     om/IInitState
     (init-state [_]
       {:death-ch (chan)
-       :evolving false})
+       :evolving? false})
 
     om/IDidMount
     (did-mount [_]
@@ -97,9 +97,8 @@
 
     om/IRender
     (render [_]
-      (dom/div #js {:className "centered"}
-        (om/build population-view app {:opts {:cell-size cell-size
-                                              :grid grid}})))))
+      (om/build population-view app {:opts {:cell-size cell-size
+                                            :grid grid}}))))
 
 (om/root
   app-component
